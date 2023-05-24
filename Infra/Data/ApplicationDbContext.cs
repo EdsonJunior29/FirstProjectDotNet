@@ -12,7 +12,17 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-       
+        modelBuilder.Entity<Category>()
+           .Property(c => c.Name).IsRequired();
+
+
+        modelBuilder.Entity<Product>()
+            .Property(p => p.Name).IsRequired();
+        modelBuilder.Entity<Product>()
+            .Property(p => p.Description).HasMaxLength(255);
+        modelBuilder.Entity<Product>()
+           .Property(p => p.CategoryId).IsRequired();
+
     }
 
     //Conversão padrão Global
