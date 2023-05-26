@@ -21,8 +21,8 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Product>()
             .Property(p => p.Description).HasMaxLength(255);
         modelBuilder.Entity<Product>()
-           .Property(p => p.CategoryId).IsRequired();
-
+            .Property(p => p.CategoryId)
+            .IsRequired();
     }
 
     //Conversão padrão Global
@@ -32,7 +32,6 @@ public class ApplicationDbContext : DbContext
         //Serão salvos no banco com o valor máximo de 100 caracteres.
         configurationBuilder.Properties<string>()
             .HaveMaxLength(100);
-
 
     }
 }
