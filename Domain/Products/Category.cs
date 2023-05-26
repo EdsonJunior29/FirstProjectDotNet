@@ -1,4 +1,6 @@
-﻿namespace FirstProjectDotNetCore.Domain.Products
+﻿using FirstProjectDotNetCore.Endpoints.Categories;
+
+namespace FirstProjectDotNetCore.Domain.Products
 {
     public class Category : Entity
     {
