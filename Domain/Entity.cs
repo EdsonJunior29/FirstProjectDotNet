@@ -1,8 +1,8 @@
-﻿using FirstProjectDotNetCore.Domain.Products;
+﻿using Flunt.Notifications;
 
 namespace FirstProjectDotNetCore.Domain;
 
-public abstract class Entity
+public abstract class Entity : Notifiable<Notification>
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

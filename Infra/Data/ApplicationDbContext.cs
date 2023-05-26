@@ -1,4 +1,5 @@
 ﻿using FirstProjectDotNetCore.Domain.Products;
+using Flunt.Notifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace FirstProjectDotNetCore.Infra.Data;
@@ -12,6 +13,9 @@ public class ApplicationDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+
+        modelBuilder.Ignore<Notification>();
+
         modelBuilder.Entity<Category>()
            .Property(c => c.Name).IsRequired();
 

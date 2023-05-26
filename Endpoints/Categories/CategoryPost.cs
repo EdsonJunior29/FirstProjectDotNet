@@ -10,15 +10,11 @@ public static class CategoryPost
     public static Delegate Handle => Action;
 
     public static IResult Action(CategoryDto categoryDto, ApplicationDbContext context) {
-        var category = new Category
-        {
-            Name = categoryDto.Name,
-            CreatedBy = "Edson Junior",
-            CreatedOn = DateTime.Now,
-            EditedBy = "Edson Junior",
-            EditedOn = DateTime.Now,
+        var category = new Category(categoryDto.Name, "Edson Junior", "Edson Junior");
 
-        };
+        if (!category.IsValid) {
+            return Results.BadRequest(category.Notifications);
+        }
         context.Categories.Add(category);
         context.SaveChanges();
 
