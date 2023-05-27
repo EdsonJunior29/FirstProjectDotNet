@@ -13,6 +13,11 @@ public static class CategoryPut
     public static IResult Action([FromRoute] Guid Id, CategoryDto categoryDto, ApplicationDbContext context) {
         var category = context.Categories.Where(c => c.Id == Id).FirstOrDefault();
         
+        if (category == null)
+        {
+            return Results.NotFound();
+        }
+
         category.Name = categoryDto.Name;
         category.Active = categoryDto.Active;
         category.EditedOn = DateTime.Now;
