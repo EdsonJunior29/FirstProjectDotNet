@@ -18,10 +18,12 @@ public static class CategoryPut
             return Results.NotFound();
         }
 
-        category.Name = categoryDto.Name;
-        category.Active = categoryDto.Active;
-        category.EditedOn = DateTime.Now;
-        category.EditedBy = "Robson";
+        category.EditCategory(categoryDto.Name, categoryDto.Active);
+
+        if(!category.IsValid)
+        {
+            return Results.ValidationProblem(category.Notifications.ConvertToProblemDetails());
+        }
      
         context.SaveChanges();
 

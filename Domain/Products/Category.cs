@@ -1,29 +1,45 @@
 ﻿using FirstProjectDotNetCore.Endpoints.Categories;
 using Flunt.Validations;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System.Diagnostics.Contracts;
 
 namespace FirstProjectDotNetCore.Domain.Products
 {
     public class Category : Entity
     {
-        public string Name { get; set; }
-        public bool Active { get; set; }
+        public string Name { get; private set; }
+        public bool Active { get; private set; }
 
         public Category(string name, string createdBy, string editedBy)
         {
-            var contract = new Contract<Category>()
-                .IsNotNullOrEmpty(name, "Name")
-                .IsNotNullOrEmpty(createdBy, "CreatedBy")
-                .IsGreaterOrEqualsThan(name, 2, "Name")
-                .IsNotNullOrEmpty(editedBy, "EditedBy");
-            AddNotifications(contract);
-
             Name = name;
             Active = true;
             CreatedBy = createdBy;
             EditedBy = editedBy;
             CreatedOn = DateTime.Now;
             EditedOn = DateTime.Now;
+
+            Validate();
+        }
+
+        public void EditCategory(string name, bool active)
+        {
+            Active = active;
+            Name = name;
+            EditedOn = DateTime.Now;
+            EditedBy = "Robson Dias";
+
+            Validate();
+        }
+
+        private void Validate()
+        {
+            var contract = new Contract<Category>()
+               .IsNotNullOrEmpty(Name, "Name")
+               .IsNotNullOrEmpty(CreatedBy, "CreatedBy")
+               .IsGreaterOrEqualsThan(Name, 2, "Name")
+               .IsNotNullOrEmpty(EditedBy, "EditedBy");
+            AddNotifications(contract);
         }
     }
 }
