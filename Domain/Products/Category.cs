@@ -14,6 +14,7 @@ namespace FirstProjectDotNetCore.Domain.Products
             var contract = new Contract<Category>()
                 .IsNotNullOrEmpty(name, "Name")
                 .IsNotNullOrEmpty(createdBy, "CreatedBy")
+                .IsGreaterOrEqualsThan(name, 2, "Name")
                 .IsNotNullOrEmpty(editedBy, "EditedBy");
             AddNotifications(contract);
 
