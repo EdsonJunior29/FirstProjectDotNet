@@ -13,7 +13,10 @@ public static class CategoryPost
         var category = new Category(categoryDto.Name, "Edson Junior", "Edson Junior");
 
         if (!category.IsValid) {
-            return Results.BadRequest(category.Notifications);
+            var errors = category.Notifications
+                .GroupBy(c => c.Key)
+                .ToDictionary(c => c.Key, c => c.Select(x => x.Message).ToArray());
+            return Results.ValidationProblem(errors);
         }
         context.Categories.Add(category);
         context.SaveChanges();
