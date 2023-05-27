@@ -1,6 +1,7 @@
 
 using FirstProjectDotNetCore.Endpoints.Categories;
 using FirstProjectDotNetCore.Infra.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace FirstProjectDotNetCore
 {
@@ -12,6 +13,10 @@ namespace FirstProjectDotNetCore
 
             //Configuration Conection DB
             builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["ConnectionStrings:FirstProjectDotNet"]);
+
+            //Configuration Identity
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Add services to the container.
             builder.Services.AddAuthorization();
