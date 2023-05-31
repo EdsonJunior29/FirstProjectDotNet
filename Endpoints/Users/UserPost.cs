@@ -20,13 +20,13 @@ public static class UserPost
             return Results.BadRequest(result.Errors.First());
         }
 
-        var claimResult = userManager.AddClaimAsync(user, new Claim("UserCode", userDto.UserCode)).Result;
+        var userClaims = new List<Claim>
+        {
+            new Claim("UserCode", userDto.UserCode),
+            new Claim("Name", userDto.Name)
+        };
 
-        if (!verifySuccess(claimResult)) {
-            return Results.BadRequest(claimResult.Errors.First());
-        }
-
-        claimResult = userManager.AddClaimAsync(user, new Claim("Name", userDto.Name)).Result;
+        var claimResult = userManager.AddClaimsAsync(user, userClaims).Result;
 
         if (!verifySuccess(claimResult))
         {
