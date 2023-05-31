@@ -44,6 +44,10 @@ namespace FirstProjectDotNetCore
             app.MapMethods(CategoryPut.Template, CategoryPut.Methods, CategoryPut.Handle);
             app.MapMethods(CategoryGetById.Template, CategoryGetById.Methods, CategoryGetById.Handle);
 
+            //Methods Users
+            app.MapMethods(UserPost.Template, UserPost.Methods, UserPost.Handle);
+
+
             app.Run();
         }
     }
