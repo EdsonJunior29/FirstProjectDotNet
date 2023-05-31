@@ -17,7 +17,7 @@ public static class UserPost
 
         if (!verifySuccess(result))
         { 
-            return Results.BadRequest(result.Errors.First());
+            return Results.ValidationProblem(result.Errors.ConvertToProblemDetails());
         }
 
         var userClaims = new List<Claim>
