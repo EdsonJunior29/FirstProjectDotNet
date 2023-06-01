@@ -9,9 +9,13 @@ public static class UserGetAll
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
-    public static IResult Action(UserManager<IdentityUser> userManager)
+    public static IResult Action(int page, UserManager<IdentityUser> userManager)
     {
-        var users = userManager.Users.ToList();
+        int rows = 2;
+
+        //Skip = Pular (ex: page = 1  cálculo = (1-1) * 2)
+        //Take = Informa a quantidade de linha que vou pegar.
+        var users = userManager.Users.Skip((page - 1) * rows).Take(rows).ToList();
 
         /*buscar usuários e seu claims(Solução perigosa)
          * Motivo: A cada interação o sistema consulta o banco de dados.
