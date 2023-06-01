@@ -49,6 +49,7 @@ namespace FirstProjectDotNetCore
 
             //Methods Users
             app.MapMethods(UserPost.Template, UserPost.Methods, UserPost.Handle);
+            app.MapMethods(UserGetAll.Template, UserGetAll.Methods, UserGetAll.Handle);
 
 
             app.Run();
