@@ -1,6 +1,4 @@
-﻿using Dapper;
-using FirstProjectDotNetCore.Endpoints.Users;
-using Microsoft.Data.SqlClient;
+﻿using FirstProjectDotNetCore.Infra.Services;
 
 namespace FirstProjectDotNetCore.Endpoints.Categories;
 
@@ -10,31 +8,12 @@ public static class UserGetAll
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
-    public static IResult Action(int? page, IConfiguration Configuration)
+    public static IResult Action(int? page, int? rows, QueryAllUsersWithClaimsName query)
     {
-        int rows = 2;
+        if (page == null) { page = 1; }
 
-        if (page == null) { 
-            page = 1;
-        }
+        if (rows == null) { rows = 2; }
 
-        //criando uma nova conexão com o banco de dados SQL
-        var db = new SqlConnection(Configuration["ConnectionStrings:FirstProjectDotNet"]);
-
-        var query = @"SELECT
-                        AspNetUsers.Email,
-                        AspNetUserClaims.ClaimValue as Name
-                        FROM AspNetUsers
-                        INNER JOIN AspNetUserClaims
-                            on AspNetUsers.Id = AspNetUserClaims.UserId and ClaimType = 'Name'
-                        Order By Name
-                        OFFSET (@page - 1) * @rows ROWS FETCH NEXT @rows ROWS ONLY"; // Linha responsável pela paginação.
-
-        var employees = db.Query<UserResponse>(
-               query,
-               new { page, rows}
-            );
-
-        return Results.Ok(employees);
+        return Results.Ok(query.execute(page.Value, rows.Value));
     }
 }

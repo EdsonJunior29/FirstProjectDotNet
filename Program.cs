@@ -1,6 +1,7 @@
 
 using FirstProjectDotNetCore.Endpoints.Categories;
 using FirstProjectDotNetCore.Infra.Data;
+using FirstProjectDotNetCore.Infra.Services;
 using Microsoft.AspNetCore.Identity;
 
 namespace FirstProjectDotNetCore
@@ -23,6 +24,9 @@ namespace FirstProjectDotNetCore
 
             // Add services to the container.
             builder.Services.AddAuthorization();
+
+            //Adicionando a classe QueryAllUsersWithClaimsName como um serviço
+            builder.Services.AddScoped<QueryAllUsersWithClaimsName>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
