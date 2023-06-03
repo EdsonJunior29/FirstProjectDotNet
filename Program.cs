@@ -1,5 +1,6 @@
 
 using FirstProjectDotNetCore.Endpoints.Categories;
+using FirstProjectDotNetCore.Endpoints.Security;
 using FirstProjectDotNetCore.Infra.Data;
 using FirstProjectDotNetCore.Infra.Services;
 using Microsoft.AspNetCore.Identity;
@@ -55,6 +56,8 @@ namespace FirstProjectDotNetCore
             app.MapMethods(UserPost.Template, UserPost.Methods, UserPost.Handle);
             app.MapMethods(UserGetAll.Template, UserGetAll.Methods, UserGetAll.Handle);
 
+            //Methods para gerar o token
+            app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
 
             app.Run();
         }
