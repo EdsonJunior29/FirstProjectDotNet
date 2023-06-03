@@ -12,7 +12,7 @@ public static class TokenPost
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
-    public static IResult Action(Login login, UserManager<IdentityUser> userManager) 
+    public static IResult Action(Login login, UserManager<IdentityUser> userManager, IConfiguration configuration) 
     {
         //procurar o usuário no banco de dados
         var user = userManager.FindByEmailAsync(login.Email).Result;
@@ -23,7 +23,7 @@ public static class TokenPost
         }
 
         //Criar um token (Código padrão do identity .NET)
-        var key = Encoding.ASCII.GetBytes("");
+        var key = Encoding.ASCII.GetBytes(configuration["token"]);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             //Informações necessário para criar o token
