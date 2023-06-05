@@ -1,4 +1,5 @@
 ﻿using FirstProjectDotNetCore.Endpoints.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
@@ -10,6 +11,7 @@ public static class UserPost
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
+    [Authorize]
     public static IResult Action(UserDto userDto, UserManager<IdentityUser> userManager)
     {
         var user = new IdentityUser { UserName = userDto.Email, Email = userDto.Email };

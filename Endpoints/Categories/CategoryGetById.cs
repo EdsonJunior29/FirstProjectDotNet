@@ -1,5 +1,6 @@
 ﻿using FirstProjectDotNetCore.Domain.Products;
 using FirstProjectDotNetCore.Infra.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FirstProjectDotNetCore.Endpoints.Categories;
@@ -10,6 +11,7 @@ public static class CategoryGetById
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
+    [AllowAnonymous]
     public static IResult Action([FromRoute] Guid Id, ApplicationDbContext context) {
 
         var categories = context.Categories.FirstOrDefault(c => c.Id == Id);

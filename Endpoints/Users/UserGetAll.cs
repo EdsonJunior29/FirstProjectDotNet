@@ -1,4 +1,5 @@
 ﻿using FirstProjectDotNetCore.Infra.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FirstProjectDotNetCore.Endpoints.Categories;
 
@@ -8,6 +9,7 @@ public static class UserGetAll
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
+    [AllowAnonymous]
     public static IResult Action(int? page, int? rows, QueryAllUsersWithClaimsName query)
     {
         if (page == null) { page = 1; }
