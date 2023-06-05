@@ -4,6 +4,7 @@ using FirstProjectDotNetCore.Endpoints.Security;
 using FirstProjectDotNetCore.Infra.Data;
 using FirstProjectDotNetCore.Infra.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -27,7 +28,15 @@ namespace FirstProjectDotNetCore
             }).AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Add services to the container.(Autorização)
-            builder.Services.AddAuthorization();
+            builder.Services.AddAuthorization(options => {
+                /* Com esse código, todas requisições deverão ser feitas
+                    por usuários autenticados.
+                 */
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
 
             //Habilitando o serviço de autenticação
             builder.Services.AddAuthentication(x => {
