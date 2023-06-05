@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -12,6 +13,7 @@ public static class TokenPost
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
+    [AllowAnonymous]
     public static IResult Action(Login login, UserManager<IdentityUser> userManager, IConfiguration configuration) 
     {
         //procurar o usuário no banco de dados
@@ -23,7 +25,7 @@ public static class TokenPost
         }
 
         //Criar um token (Código padrão do identity .NET)
-        var key = Encoding.ASCII.GetBytes(configuration["token"]);
+        var key = Encoding.ASCII.GetBytes(configuration["JwtBearerTokenSetting:SecretKey"]);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             //Informações necessário para criar o token
@@ -31,8 +33,8 @@ public static class TokenPost
                 new Claim(ClaimTypes.Email, login.Email),
             }),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-            Audience = "FirstProjectDotNetCore",
-            Issuer = "Issuer"
+            Audience = configuration["JwtBearerTokenSetting:Audience"],
+            Issuer = configuration["JwtBearerTokenSetting:Issuer"]
         };
 
         //Gerando o token
