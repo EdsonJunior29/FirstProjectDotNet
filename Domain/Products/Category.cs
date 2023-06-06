@@ -22,12 +22,13 @@ namespace FirstProjectDotNetCore.Domain.Products
             Validate();
         }
 
-        public void EditCategory(string name, bool active)
+        public void EditCategory(string name, bool active, string editedBy)
         {
             Active = active;
             Name = name;
             EditedOn = DateTime.Now;
-            EditedBy = "Robson Dias";
+            EditedBy = editedBy;
+            EditedOn = DateTime.Now;
 
             Validate();
         }
