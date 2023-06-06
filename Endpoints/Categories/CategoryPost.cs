@@ -1,6 +1,7 @@
 ﻿using FirstProjectDotNetCore.Domain.Products;
 using FirstProjectDotNetCore.Infra.Data;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace FirstProjectDotNetCore.Endpoints.Categories;
 
@@ -11,8 +12,11 @@ public static class CategoryPost
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "UserPolicy02")]
-    public static IResult Action(CategoryDto categoryDto, ApplicationDbContext context) {
-        var category = new Category(categoryDto.Name, "Edson Junior", "Edson Junior");
+    public static IResult Action(CategoryDto categoryDto, HttpContext http, ApplicationDbContext context) {
+        //obter informações do usuário que está autenticado
+        var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        
+        var category = new Category(categoryDto.Name, userId, userId);
 
         if (!category.IsValid) {
             return Results.ValidationProblem(category.Notifications.ConvertToProblemDetails());
