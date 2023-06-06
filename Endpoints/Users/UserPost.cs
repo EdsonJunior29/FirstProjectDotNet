@@ -11,7 +11,7 @@ public static class UserPost
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
-    [Authorize]
+    [Authorize(Policy = "UserPolicy02")]
     public static IResult Action(UserDto userDto, UserManager<IdentityUser> userManager)
     {
         var user = new IdentityUser { UserName = userDto.Email, Email = userDto.Email };

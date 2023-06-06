@@ -10,7 +10,7 @@ public static class CategoryGetAll
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
-    [AllowAnonymous]
+    [Authorize(Policy = "UserPolicy")]
     public static IResult Action(ApplicationDbContext context) {
 
         var categories = context.Categories.ToList();

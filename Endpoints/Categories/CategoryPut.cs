@@ -11,7 +11,7 @@ public static class CategoryPut
     public static string[] Methods => new string[] { HttpMethod.Put.ToString() };
     public static Delegate Handle => Action;
 
-    [Authorize]
+    [Authorize(Policy = "UserPolicy02")]
     public static IResult Action([FromRoute] Guid Id, CategoryDto categoryDto, ApplicationDbContext context) {
         var category = context.Categories.Where(c => c.Id == Id).FirstOrDefault();
         
