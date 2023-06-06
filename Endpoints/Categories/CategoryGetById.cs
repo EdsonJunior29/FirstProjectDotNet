@@ -11,7 +11,7 @@ public static class CategoryGetById
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
-    [AllowAnonymous]
+    [Authorize(Policy = "UserPolicy")]
     public static IResult Action([FromRoute] Guid Id, ApplicationDbContext context) {
 
         var categories = context.Categories.FirstOrDefault(c => c.Id == Id);

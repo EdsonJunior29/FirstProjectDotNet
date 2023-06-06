@@ -62,6 +62,7 @@ namespace FirstProjectDotNetCore
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
+                    ClockSkew = TimeSpan.Zero,
                     ValidIssuer = builder.Configuration["JwtBearerTokenSetting:Issuer"],
                     ValidAudience = builder.Configuration["JwtBearerTokenSetting:Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtBearerTokenSetting:SecretKey"]))

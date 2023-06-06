@@ -10,7 +10,7 @@ public static class CategoryPost
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
-    [Authorize]
+    [Authorize(Policy = "UserPolicy02")]
     public static IResult Action(CategoryDto categoryDto, ApplicationDbContext context) {
         var category = new Category(categoryDto.Name, "Edson Junior", "Edson Junior");
 
