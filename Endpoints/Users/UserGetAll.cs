@@ -9,7 +9,7 @@ public static class UserGetAll
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
-    [Authorize(Policy = "UserPolicy")]
+    [Authorize(Policy = "UserPolicy02")]
     public static IResult Action(int? page, int? rows, QueryAllUsersWithClaimsName query)
     {
         if (page == null) { page = 1; }
