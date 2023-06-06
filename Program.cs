@@ -32,10 +32,16 @@ namespace FirstProjectDotNetCore
                 /* Com esse código, todas requisições deverão ser feitas
                     por usuários autenticados.
                  */
-                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                /*options.FallbackPolicy = new AuthorizationPolicyBuilder()
                     .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
                     .RequireAuthenticatedUser()
-                    .Build();
+                    .Build();*/
+
+                //Criando uma policies
+                options.AddPolicy("UserPolicy", up =>
+                {
+                    up.RequireAuthenticatedUser().RequireClaim("UserCode");
+                });
             });
 
             //Habilitando o serviço de autenticação

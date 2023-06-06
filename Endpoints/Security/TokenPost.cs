@@ -31,6 +31,7 @@ public static class TokenPost
             //Informações necessário para criar o token
             Subject = new ClaimsIdentity(new Claim[] {
                 new Claim(ClaimTypes.Email, login.Email),
+                new Claim("UserCode", "1"),
             }),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             Audience = configuration["JwtBearerTokenSetting:Audience"],
