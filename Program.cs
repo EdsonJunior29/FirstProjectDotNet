@@ -42,6 +42,13 @@ namespace FirstProjectDotNetCore
                 {
                     up.RequireAuthenticatedUser().RequireClaim("UserCode");
                 });
+
+                //Informando o usuario que terá acesse a rota.
+                //Essa policie valida o claim e o valor do claim
+                options.AddPolicy("UserPolicy02", up =>
+                {
+                    up.RequireAuthenticatedUser().RequireClaim("UserCode", "usuario02");
+                });
             });
 
             //Habilitando o serviço de autenticação

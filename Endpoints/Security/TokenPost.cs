@@ -24,15 +24,21 @@ public static class TokenPost
             Results.BadRequest("Usuário ou senha incorreto.");
         }
 
+        var claims = userManager.GetClaimsAsync(user).Result;
+
+        var subject = new ClaimsIdentity(new Claim[] {
+            new Claim(ClaimTypes.Email, login.Email),
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+        });
+
+        subject.AddClaims(claims);
+
         //Criar um token (Código padrão do identity .NET)
         var key = Encoding.ASCII.GetBytes(configuration["JwtBearerTokenSetting:SecretKey"]);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             //Informações necessário para criar o token
-            Subject = new ClaimsIdentity(new Claim[] {
-                new Claim(ClaimTypes.Email, login.Email),
-                new Claim("UserCode", "1"),
-            }),
+            Subject = subject,
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             Audience = configuration["JwtBearerTokenSetting:Audience"],
             Issuer = configuration["JwtBearerTokenSetting:Issuer"]
