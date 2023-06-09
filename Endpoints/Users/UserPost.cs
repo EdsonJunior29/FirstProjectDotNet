@@ -12,11 +12,11 @@ public static class UserPost
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "UserPolicy02")]
-    public static IResult Action(UserDto userDto,HttpContext http, UserManager<IdentityUser> userManager)
+    public static async Task<IResult> Action(UserDto userDto,HttpContext http, UserManager<IdentityUser> userManager)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var user = new IdentityUser { UserName = userDto.Email, Email = userDto.Email };
-        var result = userManager.CreateAsync(user, userDto.Password).Result;
+        var result = await userManager.CreateAsync(user, userDto.Password);
 
         if (!verifySuccess(result))
         { 
@@ -30,7 +30,7 @@ public static class UserPost
             new Claim("CreatedBy", userId)
         };
 
-        var claimResult = userManager.AddClaimsAsync(user, userClaims).Result;
+        var claimResult = await userManager.AddClaimsAsync(user, userClaims);
 
         if (!verifySuccess(claimResult))
         {
