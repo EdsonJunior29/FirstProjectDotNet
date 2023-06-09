@@ -1,6 +1,5 @@
-﻿using FirstProjectDotNetCore.Infra.Data;
+﻿using FirstProjectDotNetCore.Infra.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 namespace FirstProjectDotNetCore.Endpoints.Categories;
 
@@ -11,17 +10,16 @@ public static class CategoryGetAll
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "UserPolicy")]
-    public static async Task<IResult> Action(ApplicationDbContext context) {
+    public static async Task<IResult> Action(int? page, int? rows, QueryAllCategories allCategories) {
 
-        var categories = await context.Categories.ToListAsync();
-        var response = categories.Select(c => new CategoryResponse
-        {
-            Id = c.Id,
-            Name = c.Name,
-            Active = c.Active
-        });
 
-        return Results.Ok(response);
+        if (page == null) { page = 1; }
+
+        if (rows == null) { rows = 2; }
+
+        var categories = await allCategories.Execute(page.Value, rows.Value);
+
+        return Results.Ok(categories);
     }
 
 }

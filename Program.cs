@@ -4,7 +4,6 @@ using FirstProjectDotNetCore.Endpoints.Security;
 using FirstProjectDotNetCore.Infra.Data;
 using FirstProjectDotNetCore.Infra.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -70,8 +69,9 @@ namespace FirstProjectDotNetCore
             
             });
 
-            //Adicionando a classe QueryAllUsersWithClaimsName como um serviço
+            //Adicionando a classe QueryAllUsersWithClaimsName and QueryAllCategories como um serviço
             builder.Services.AddScoped<QueryAllUsersWithClaimsName>();
+            builder.Services.AddScoped<QueryAllCategories>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
