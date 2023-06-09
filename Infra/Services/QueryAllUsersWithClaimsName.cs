@@ -14,7 +14,7 @@ public class QueryAllUsersWithClaimsName
         this.configuration = configuration;
     }
 
-    public IEnumerable<UserResponse> execute(int page, int rows) 
+    public async Task<IEnumerable<UserResponse>> Execute(int page, int rows) 
     {
         //criando uma nova conexão com o banco de dados SQL
         var db = new SqlConnection(configuration["ConnectionStrings:FirstProjectDotNet"]);
@@ -28,7 +28,7 @@ public class QueryAllUsersWithClaimsName
                         Order By Name
                         OFFSET (@page - 1) * @rows ROWS FETCH NEXT @rows ROWS ONLY"; // Linha responsável pela paginação.
 
-         return db.Query<UserResponse>(
+         return await db.QueryAsync<UserResponse>(
                query,
                new { page, rows }
             );
