@@ -17,7 +17,10 @@ public class QueryAllCategories
         //criando uma nova conexão com o banco de dados SQL
         var db = new SqlConnection(configuration["ConnectionStrings:FirstProjectDotNet"]);
 
-        var query = @"SELECT *
+        var query = @"SELECT
+                       Categories.Id,
+                       Categories.Name,
+                       Categories.Active
                     FROM Categories
                     WHERE Categories.Active = 1
                     Order By Name
