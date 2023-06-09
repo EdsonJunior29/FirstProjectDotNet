@@ -12,7 +12,7 @@ public static class CategoryPost
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "UserPolicy02")]
-    public static IResult Action(CategoryDto categoryDto, HttpContext http, ApplicationDbContext context) {
+    public static async Task<IResult> Action(CategoryDto categoryDto, HttpContext http, ApplicationDbContext context) {
         //obter informações do usuário que está autenticado
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         
@@ -21,8 +21,8 @@ public static class CategoryPost
         if (!category.IsValid) {
             return Results.ValidationProblem(category.Notifications.ConvertToProblemDetails());
         }
-        context.Categories.Add(category);
-        context.SaveChanges();
+        await context.Categories.AddAsync(category);
+        await context.SaveChangesAsync();
 
         return Results.Created("/categories", category.Id);
     }
