@@ -10,12 +10,13 @@ public static class UserGetAll
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "UserPolicy")]
-    public static IResult Action(int? page, int? rows, QueryAllUsersWithClaimsName query)
+    public static async Task<IResult> Action(int? page, int? rows, QueryAllUsersWithClaimsName query)
     {
         if (page == null) { page = 1; }
 
         if (rows == null) { rows = 2; }
 
-        return Results.Ok(query.execute(page.Value, rows.Value));
+        var result = await query.Execute(page.Value, rows.Value);
+        return Results.Ok(result);
     }
 }
