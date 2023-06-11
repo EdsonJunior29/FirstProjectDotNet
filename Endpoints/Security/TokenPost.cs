@@ -7,24 +7,34 @@ using System.Text;
 
 namespace FirstProjectDotNetCore.Endpoints.Security;
 
-public static class TokenPost
+public class TokenPost
 {
     public static string Template => "/token";
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
     [AllowAnonymous]
-    public static IResult Action(Login login, UserManager<IdentityUser> userManager, IConfiguration configuration) 
+    public static async Task<IResult> Action(Login login, UserManager<IdentityUser> userManager, IConfiguration configuration, ILogger<TokenPost> logger) 
     {
-        //procurar o usuário no banco de dados
-        var user = userManager.FindByEmailAsync(login.Email).Result;
+        DateTime dateTime = DateTime.UtcNow;
+        //adicionar um log
+        logger.LogInformation("Getting token" + dateTime);
+        
+        //Log de Warning
+        //logger.LogWarning("Warning Getting token" + dateTime);
+        
 
-        if (!userManager.CheckPasswordAsync(user, login.Password).Result || user == null) 
+        //procurar o usuário no banco de dados
+        var user = await userManager.FindByEmailAsync(login.Email);
+
+        if (!await userManager.CheckPasswordAsync(user, login.Password) || user == null) 
         {
+            //Log de erro
+            logger.LogError("Erro Getting User" + dateTime);
             Results.BadRequest("Usuário ou senha incorreto.");
         }
 
-        var claims = userManager.GetClaimsAsync(user).Result;
+        var claims = await userManager.GetClaimsAsync(user);
 
         var subject = new ClaimsIdentity(new Claim[] {
             new Claim(ClaimTypes.Email, login.Email),
