@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.Text;
 
 namespace FirstProjectDotNetCore
@@ -17,6 +18,21 @@ namespace FirstProjectDotNetCore
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            //Configuração do Serilog(Salvar informações de logs)
+            builder.WebHost.UseSerilog((context, configuration) =>
+            {
+                configuration
+                    .WriteTo.Console()
+                    .WriteTo.MSSqlServer(
+                        context.Configuration["ConnectionStrings:FirstProjectDotNet"],
+                        sinkOptions: new Serilog.Sinks.MSSqlServer.MSSqlServerSinkOptions()
+                        {
+                            AutoCreateSqlTable = true,
+                            TableName = "LogAPI"
+                        }
+                    );
+            });
 
             //Configuration Conection DB
             builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["ConnectionStrings:FirstProjectDotNet"]);
