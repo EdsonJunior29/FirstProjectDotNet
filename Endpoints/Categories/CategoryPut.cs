@@ -1,8 +1,6 @@
-﻿using FirstProjectDotNetCore.Domain.Products;
-using FirstProjectDotNetCore.Infra.Data;
+﻿using FirstProjectDotNetCore.Infra.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.WebRequestMethods;
 using System.Security.Claims;
 
 namespace FirstProjectDotNetCore.Endpoints.Categories;

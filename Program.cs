@@ -4,7 +4,9 @@ using FirstProjectDotNetCore.Endpoints.Security;
 using FirstProjectDotNetCore.Infra.Data;
 using FirstProjectDotNetCore.Infra.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -105,6 +107,27 @@ namespace FirstProjectDotNetCore
 
             //Methods para gerar o token
             app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
+
+            //Filtros de erros
+            app.UseExceptionHandler("/error");
+
+            //Tratamento de erro
+            app.Map("/error", (HttpContext http) =>
+            {
+                //verificar o tipo de erro(Interrogação e para saver se existe ou não o erro);
+                var error = http.Features?.Get<IExceptionHandlerFeature>()?.Error;
+
+                if (error != null) {
+                    if (error is SqlException) {
+                        return Results.Problem(title: "Database out", statusCode: 500);
+                        
+                    }
+                    
+                }
+
+                return Results.Problem(title: "An error ocurred", statusCode: 500);
+
+            });
 
             app.Run();
         }
