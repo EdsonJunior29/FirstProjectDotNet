@@ -30,6 +30,8 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
         modelBuilder.Entity<Product>()
             .Property(p => p.CategoryId)
             .IsRequired();
+        modelBuilder.Entity<Product>()
+            .Property(p => p.Price).HasColumnType("decimal(10,2)").IsRequired();
     }
 
     //Conversão padrão Global

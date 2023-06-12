@@ -11,16 +11,18 @@ namespace FirstProjectDotNetCore.Domain.Products
         public bool HasStock { get; private set; }
         public Category Category { get; private set; }
         public bool Active { get; private set; } = true;
+        public decimal Price { get; private set; }
 
 
         public Product(){ }
 
-        public Product(string name, Category category, string description, bool hasStock, string createdBy)
+        public Product(string name, Category category, string description, decimal price, bool hasStock, string createdBy)
         {
             Name = name;
             Category = category;
             HasStock = hasStock;
             Description = description;
+            Price = price;
             CreatedBy = createdBy;
             EditedBy = createdBy;
             CreatedOn = DateTime.Now;
@@ -34,8 +36,9 @@ namespace FirstProjectDotNetCore.Domain.Products
             var contract = new Contract<Product>()
                 .IsNotNullOrEmpty(Name, "Name")
                 .IsGreaterOrEqualsThan(Name, 3, "Name")
-                .IsNotNull(Category, "Category")
+                .IsNotNull(Category, "Category", "Category not found.")
                 .IsGreaterOrEqualsThan(Description, 3, "Description")
+                .IsGreaterOrEqualsThan(Price, 1, "Price")
                 .IsNotNullOrEmpty(CreatedBy, "CreatedBy")
                 .IsNotNullOrEmpty(EditedBy, "EditedBy");
              AddNotifications(contract);

@@ -14,7 +14,7 @@ public class ProductGetAll
       public static async Task<IResult> Action(ApplicationDbContext context)
       {
           var products = context.Products.Include(p => p.CategoryId).OrderBy(p => p.Name).ToList();
-          var response = products.Select(p => new ProductResponse(p.Name, p.Category.Name, p.Description, p.HasStock, p.Active));
+          var response = products.Select(p => new ProductResponse(p.Name, p.Category.Name, p.Description,p.Price, p.HasStock, p.Active));
 
           return Results.Ok(response);
       }
