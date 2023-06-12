@@ -1,5 +1,6 @@
 
 using FirstProjectDotNetCore.Endpoints.Categories;
+using FirstProjectDotNetCore.Endpoints.Products;
 using FirstProjectDotNetCore.Endpoints.Security;
 using FirstProjectDotNetCore.Infra.Data;
 using FirstProjectDotNetCore.Infra.Services;
@@ -120,6 +121,10 @@ namespace FirstProjectDotNetCore
             //Methods Users
             app.MapMethods(UserPost.Template, UserPost.Methods, UserPost.Handle);
             app.MapMethods(UserGetAll.Template, UserGetAll.Methods, UserGetAll.Handle);
+
+            //Methods Products
+            app.MapMethods(ProductPost.Template, ProductPost.Methods, ProductPost.Handle);
+            app.MapMethods(ProductGetAll.Template, ProductGetAll.Methods, ProductGetAll.Handle);
 
             //Methods para gerar o token
             app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
