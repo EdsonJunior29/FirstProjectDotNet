@@ -126,6 +126,9 @@ namespace FirstProjectDotNetCore
             app.MapMethods(ProductPost.Template, ProductPost.Methods, ProductPost.Handle);
             app.MapMethods(ProductGetAll.Template, ProductGetAll.Methods, ProductGetAll.Handle);
 
+            //Methods Vitrine de Produtos
+            app.MapMethods(ProductGetShowCase.Template, ProductGetShowCase.Methods, ProductGetShowCase.Handle);
+
             //Methods para gerar o token
             app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
 
