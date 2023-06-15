@@ -14,7 +14,14 @@ public class TokenPost
     public static Delegate Handle => Action;
 
     [AllowAnonymous]
-    public static async Task<IResult> Action(Login login, UserManager<IdentityUser> userManager, IConfiguration configuration, ILogger<TokenPost> logger) 
+    public static async Task<IResult> Action(
+        Login login,
+        UserManager<IdentityUser> userManager,
+        IConfiguration configuration,
+        ILogger<TokenPost> logger,
+        IWebHostEnvironment environment
+        )
+    // IWebHostEnvironment : informa em que ambiente o código está sendo executado ex:. Dev e Produção
     {
         DateTime dateTime = DateTime.UtcNow;
         //adicionar um log
@@ -52,7 +59,7 @@ public class TokenPost
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
             Audience = configuration["JwtBearerTokenSetting:Audience"],
             Issuer = configuration["JwtBearerTokenSetting:Issuer"],
-            Expires = DateTime.UtcNow.AddSeconds(30)
+            Expires = environment.IsDevelopment() || environment.IsStaging() ? DateTime.UtcNow.AddMonths(1) : DateTime.UtcNow.AddMinutes(2) 
         };
 
         //Gerando o token
